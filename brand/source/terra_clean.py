@@ -1,6 +1,6 @@
 """Remove the grey shading from Terra's artwork (face, shirt, motion smudges).
 
-Low-saturation grey pixels are lifted to white; black outlines and the teal cape
+Low-saturation grey pixels are lifted to white; black outlines and the green cape
 are left alone. Used to build docs/assets/img/terra-*.{png,webp}.
 """
 import numpy as np

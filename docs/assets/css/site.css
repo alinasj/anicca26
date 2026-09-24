@@ -70,16 +70,18 @@ p { margin: 0; }
 .brand { display: inline-flex; line-height: 0; }
 .brand img { height: 40px; width: auto; }
 .nav { display: flex; gap: clamp(4px, 1.2vw, 12px); font-size: 17px; }
-/* Each link is a pill: it fills with soft green on hover, and a gold line grows underneath */
-.nav a { position: relative; text-decoration: none; color: var(--racing); padding: 8px 16px; border-radius: 999px;
-  transition: background-color .18s ease, color .18s ease; }
-.nav a::after { content: ""; position: absolute; left: 16px; right: 16px; bottom: 3px; height: 2px; border-radius: 2px;
-  background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .22s ease; }
-.nav a:hover, .nav a:focus-visible { background: #e3efe7; color: var(--racing-deep); }
-.nav a:hover::after, .nav a:focus-visible::after, .nav a[aria-current="page"]::after { transform: scaleX(1); }
-.nav a:active { background: #d3e6da; }
-.nav a[aria-current="page"] { font-weight: 500; }
-@media (prefers-reduced-motion: reduce) { .nav a, .nav a::after { transition: none; } }
+/* Menu links: on hover the pill fills with Racing Green and the text turns white */
+.nav a { position: relative; text-decoration: none; color: var(--racing); padding: 9px 18px; border-radius: 999px;
+  border: 1.5px solid transparent; cursor: pointer; transition: background-color .15s ease, color .15s ease, border-color .15s ease, transform .15s ease; }
+.nav a::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 4px; height: 2px; border-radius: 2px;
+  background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
+.nav a:hover, .nav a:focus-visible { background: var(--racing); color: #fff; transform: translateY(-1px); }
+.nav a:hover::after, .nav a:focus-visible::after { transform: scaleX(0); }
+.nav a:active { transform: translateY(0); }
+.nav a[aria-current="page"] { font-weight: 500; border-color: #cfe3d6; background: #e8f2ec; }
+.nav a[aria-current="page"]::after { transform: scaleX(1); }
+.nav a[aria-current="page"]:hover { background: var(--racing); }
+@media (prefers-reduced-motion: reduce) { .nav a, .nav a::after, .product { transition: none; } .nav a:hover, .product.is-link:hover { transform: none; } }
 
 .hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: center; padding-block: clamp(40px, 7vw, 96px) clamp(56px, 8vw, 112px); }
 .hero .copy { display: flex; flex-direction: column; gap: 24px; }
@@ -142,6 +144,11 @@ p { margin: 0; }
 .product.featured .terra-anim { width: 210px; background: #fff; border-radius: 20px; padding: 8px; box-shadow: 0 10px 24px -14px rgba(18, 73, 47, .35); }
 @media (max-width: 560px) { .product.featured { grid-template-columns: 1fr; } .product.featured .terra-anim { width: 180px; } }
 .product.wide { grid-column: 1 / -1; }
+/* The aTask tile is clickable as a whole */
+.product.is-link { cursor: pointer; }
+.product.is-link .stretched::before { content: ""; position: absolute; inset: 0; }
+.product.is-link:hover { transform: translateY(-3px); box-shadow: 0 18px 36px -20px rgba(18, 73, 47, .45); border-color: var(--racing); }
+.product.is-link:hover .more { text-decoration-thickness: 2px; }
 .chip { font-size: 13px; font-weight: 500; padding: 4px 11px; border-radius: 999px; white-space: nowrap; }
 .chip-now { background: var(--racing); color: #fff; }
 .chip-later { background: #fff; color: #6b5712; border: 1px solid #e7dcb0; }

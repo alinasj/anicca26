@@ -63,7 +63,7 @@ p { margin: 0; }
 .lede { font-size: clamp(19px, 2vw, 22px); line-height: 1.55; max-width: 36ch; }
 
 /* ---------- Header + hero (white, with the logo's color line underneath) ---------- */
-.band { background: radial-gradient(1200px 500px at 85% 20%, #eef5f0 0%, rgba(238, 245, 240, 0) 70%), #fff; color: var(--ink); border-bottom: 4px solid transparent; border-image: var(--rainbow) 1; }
+.band { background: radial-gradient(1200px 500px at 85% 20%, #eef5f0 0%, rgba(238, 245, 240, 0) 70%), #fff; color: var(--ink); }
 .band a { color: var(--racing); }
 .band h1 { color: var(--racing); }
 .site-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; flex-wrap: wrap; }
@@ -108,17 +108,39 @@ p { margin: 0; }
 .btn small { font-size: 12px; opacity: .8; display: block; margin-bottom: 3px; font-weight: 400; }
 .btn .two { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1; }
 
-/* Animated logo: the line draws once, then the dots appear */
-.logo-anim .draw { stroke-dasharray: 1 1; stroke-dashoffset: 1; animation: draw 1.8s .25s cubic-bezier(.45, 0, .2, 1) forwards; }
-.logo-anim .d { opacity: 0; animation: pop .35s ease-out forwards; }
-.logo-anim .d1 { animation-delay: 2.05s; } .logo-anim .d2 { animation-delay: 2.25s; }
-.logo-anim .d3 { animation-delay: 2.45s; } .logo-anim .d4 { animation-delay: 2.65s; }
+/* Animated logo: the line draws itself, the dots pop in, then keep a gentle
+   "..." wave going. Hovering or tapping the logo replays the drawing (site.js). */
+.logo-art { cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 50%; }
+.logo-anim { overflow: visible; transition: transform .4s ease; }
+.logo-art:hover .logo-anim { transform: rotate(-4deg) scale(1.02); }
+.logo-anim .draw { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+.logo-anim .d { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.logo-anim.play .draw { animation: draw 1.8s .25s cubic-bezier(.45, 0, .2, 1) forwards; }
+.logo-anim.play .d1 { animation: pop .35s ease-out 2.05s forwards, breathe 2.6s ease-in-out 3.3s infinite; }
+.logo-anim.play .d2 { animation: pop .35s ease-out 2.25s forwards, breathe 2.6s ease-in-out 3.5s infinite; }
+.logo-anim.play .d3 { animation: pop .35s ease-out 2.45s forwards, breathe 2.6s ease-in-out 3.7s infinite; }
+.logo-anim.play .d4 { animation: pop .35s ease-out 2.65s forwards, breathe 2.6s ease-in-out 3.9s infinite; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes pop { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
-.logo-anim .d { transform-box: fill-box; transform-origin: center; }
+@keyframes breathe { 0%, 55%, 100% { opacity: 1; transform: translateY(0) scale(1); } 22% { opacity: 1; transform: translateY(-1.4px) scale(1.3); } }
+
+/* The color line under the header: colors flow along it; faster and brighter on hover */
+.band { position: relative; border-bottom: 0; }
+.band::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px;
+  background: linear-gradient(90deg, #3a9a6a, #9fb13a, #f7a21b, #e8661f, #b8452a, #e8661f, #f7a21b, #9fb13a, #3a9a6a);
+  background-size: 200% 100%; animation: flow 9s linear infinite;
+  transition: height .3s ease, filter .3s ease, box-shadow .3s ease; }
+.band:hover::after { height: 8px; animation-duration: 3s; filter: saturate(1.35) brightness(1.05); box-shadow: 0 0 18px rgba(247, 162, 27, .55); }
+@keyframes flow { from { background-position: 0% 0; } to { background-position: -200% 0; } }
+/* the aTask tile's top strip flows the same way, slowly */
+.product.featured::before { background: linear-gradient(90deg, #3a9a6a, #9fb13a, #f7a21b, #e8661f, #b8452a, #e8661f, #f7a21b, #9fb13a, #3a9a6a); background-size: 200% 100%; animation: flow 14s linear infinite; }
+.product.is-link:hover::before { animation-duration: 4s; }
+
 @media (prefers-reduced-motion: reduce) {
-  .logo-anim .draw { animation: none; stroke-dashoffset: 0; }
-  .logo-anim .d { animation: none; opacity: 1; }
+  .logo-anim .draw, .logo-anim.play .draw { animation: none; stroke-dashoffset: 0; }
+  .logo-anim .d, .logo-anim.play .d1, .logo-anim.play .d2, .logo-anim.play .d3, .logo-anim.play .d4 { animation: none; opacity: 1; }
+  .logo-art:hover .logo-anim { transform: none; }
+  .band::after, .product.featured::before { animation: none; }
   .btn { transition: none; }
 }
 

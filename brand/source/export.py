@@ -172,3 +172,4 @@ for v in VARIANTS:
         write(os.path.join(SITE_IMG, os.path.basename(src)), open(src).read())
 # Inline-ready full-size mark body (white line) for the animated hero
 write(os.path.join(HERE, "hero-mark-body.svgfrag"), mark(WHITE, dots=False))
+write(os.path.join(HERE, "hero-mark-body-light.svgfrag"), mark(RACING, dots=False))

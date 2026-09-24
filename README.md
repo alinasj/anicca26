@@ -33,14 +33,16 @@ Then open http://localhost:8726. Links won't work if you double-click the HTML f
 |---|---|
 | Racing Green | `#12492F` (main color) |
 | Royal Gold | `#D4AF37` (accent). Use on green or dark only. Gold buttons need dark text. |
-| Logo line fade | white → `#8B5CF6` → `#118AB2` → `#3A9A6A` |
-| Logo dots | `#3A9A6A` `#7DAA55` `#AFAE45` `#D4AF37` |
+| Logo line fade | white (or green) → leaf green `#9FB13A` → Marigold `#F7A21B` → Saffron `#E8661F` |
+| Logo dots | `#E8661F` `#D2552A` `#B8452A` `#963826` (Saffron falling to copper) |
 | Font | Jost Light (300) for headings and the logo. Jost Regular (400) for text. |
 
 Logo files in `brand/logo/`:
 - `…-on-dark`: white line, for green or dark backgrounds.
 - `…-on-light`: green line, for white backgrounds.
 - `…-lockup-on-light-deepgold`: the same as `…-on-light`, but with a deeper gold ’26 that's easier to read on white.
+
+To try other logo colors side by side: `python3 brand/source/hue_options.py` writes `hue-options.html`.
 - `anicca26-favicon.svg`: a simpler version with a thicker line and two dots, for tiny sizes.
 
 The Jost font file in `brand/source/` is licensed under the SIL Open Font License (`OFL.txt`).

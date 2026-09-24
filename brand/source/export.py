@@ -24,8 +24,8 @@ RACING = "#12492F"
 GOLD = "#D4AF37"
 WHITE = "#FFFFFF"
 INK = "#13261F"
-FADE = ["#8B5CF6", "#118AB2", "#3A9A6A"]            # purple, blue, green
-DOTS = ["#3A9A6A", "#7DAA55", "#AFAE45", "#D4AF37"]  # green to gold
+FADE = ["#9FB13A", "#F7A21B", "#E8661F"]            # leaf green, Marigold, Saffron
+DOTS = ["#E8661F", "#D2552A", "#B8452A", "#963826"]  # Saffron falling to copper
 
 # ---- oklab mixing (matches CSS color-mix(in oklab, ...)) -------------------
 def _lin(c): return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
@@ -68,10 +68,11 @@ def color_at(stops, s):
         if s <= sb: return mix(ca, cb, (s - sa) / (sb - sa))
     return stops[-1][1]
 
-def mark(line, mx=8.6, dots=True, small=False):
+def mark(line, mx=8.6, dots=True, small=False, fade=None, dot_colors=None):
     """SVG elements for the mark in a 100x100 box. `line` is the starting color."""
+    fade = fade or FADE; DOTS_ = dot_colors or DOTS
     wf = lambda s: mx * ss(s / .32)
-    stops = [(0.58, line), (0.72, FADE[0]), (0.86, FADE[1]), (1.0, FADE[2])]
+    stops = [(0.58, line), (0.72, fade[0]), (0.86, fade[1]), (1.0, fade[2])]
     start = stops[0][0]
     parts = [f'<path d="{band(0, start + 0.012, wf, 120)}" fill="{line}"/>']
     n = 60 if small else 110
@@ -80,13 +81,13 @@ def mark(line, mx=8.6, dots=True, small=False):
         s0 = start + i * step; s1 = min(1, s0 + step * 1.6)
         parts.append(f'<path d="{band(s0, s1, wf, 3)}" fill="{color_at(stops, s0 + step / 2)}"/>')
     ex, ey = pt(A0 + SPAN)
-    parts.append(f'<circle cx="{ex:.2f}" cy="{ey:.2f}" r="{mx / 2}" fill="{FADE[2]}"/>')
+    parts.append(f'<circle cx="{ex:.2f}" cy="{ey:.2f}" r="{mx / 2}" fill="{fade[2]}"/>')
     if dots:
         end = A0 + SPAN
         if small:   # two bold dots stay visible at 16-32px
-            spec = [(24, 5.0, DOTS[1]), (44, 4.2, DOTS[3])]
+            spec = [(24, 5.0, DOTS_[1]), (44, 4.2, DOTS_[3])]
         else:
-            spec = [(19.6, 3.6, DOTS[0]), (37.0, 3.0, DOTS[1]), (52.4, 2.4, DOTS[2]), (65.9, 1.9, DOTS[3])]
+            spec = [(19.6, 3.6, DOTS_[0]), (37.0, 3.0, DOTS_[1]), (52.4, 2.4, DOTS_[2]), (65.9, 1.9, DOTS_[3])]
         for off, r, c in spec:
             x, y = pt(end + off)
             parts.append(f'<circle cx="{x:.2f}" cy="{y:.2f}" r="{r}" fill="{c}"/>')
@@ -128,48 +129,53 @@ def wordmark(x, center_y, size, name_fill, stamp_fill):
     p2, w2 = text_path("’26", x + w1 + ss_ * 0.1, base - ss_ * 1.3, ss_, stamp_fill)
     return p1 + p2, w1 + ss_ * 0.1 + w2
 
-def placed_mark(x, y, size, line, **kw):
+def placed_mark(x, y, size, line, **kw):  # kw: mx, small, fade, dot_colors
     k = size / VB[2]
     return f'<g transform="translate({x:.2f} {y:.2f}) scale({k:.4f}) translate({-VB[0]} {-VB[1]})">{mark(line, **kw)}</g>'
 
-# ---- Exports -------------------------------------------------------------------
-VARIANTS = {
-    # name: (line color of the mark, name color, stamp color)
-    "on-dark": (WHITE, WHITE, GOLD),      # Racing Green, dark photos, dark mode
-    "on-light": (RACING, INK, GOLD),      # white / light backgrounds
-}
-vb = " ".join(map(str, VB))
-for v, (line, name_c, stamp_c) in VARIANTS.items():
-    write(os.path.join(LOGO, f"anicca26-mark-{v}.svg"), svg(512, 512, mark(line), vb))
-    # horizontal lockup: mark 64, name 52, gap 10 (as on the board)
-    mk = placed_mark(0, 0, 64, line)
-    wm, ww = wordmark(74, 32, 52, name_c, stamp_c)
-    W = math.ceil(74 + ww + 2)
-    write(os.path.join(LOGO, f"anicca26-lockup-{v}.svg"), svg(W, 64, mk + wm))
-    # stacked lockup: mark 88, gap 6, name 40
-    wm_probe, ww2 = wordmark(0, 0, 40, name_c, stamp_c)
-    W2 = math.ceil(max(88, ww2) + 8); cx = W2 / 2
-    mk2 = placed_mark(cx - 44, 0, 88, line)
-    wm2, _ = wordmark(cx - ww2 / 2, 88 + 6 + 20, 40, name_c, stamp_c)
-    write(os.path.join(LOGO, f"anicca26-stacked-{v}.svg"), svg(W2, 88 + 6 + 40 + 4, mk2 + wm2))
-# light-background alternative with a deeper gold, for text-contrast purists
-wm, ww = wordmark(74, 32, 52, INK, "#8A6D12")
-write(os.path.join(LOGO, "anicca26-lockup-on-light-deepgold.svg"),
-      svg(math.ceil(74 + ww + 2), 64, placed_mark(0, 0, 64, RACING) + wm))
+def main():
+    # ---- Exports -------------------------------------------------------------------
+    VARIANTS = {
+        # name: (line color of the mark, name color, stamp color)
+        "on-dark": (WHITE, WHITE, GOLD),      # Racing Green, dark photos, dark mode
+        "on-light": (RACING, INK, GOLD),      # white / light backgrounds
+    }
+    vb = " ".join(map(str, VB))
+    for v, (line, name_c, stamp_c) in VARIANTS.items():
+        write(os.path.join(LOGO, f"anicca26-mark-{v}.svg"), svg(512, 512, mark(line), vb))
+        # horizontal lockup: mark 64, name 52, gap 10 (as on the board)
+        mk = placed_mark(0, 0, 64, line)
+        wm, ww = wordmark(74, 32, 52, name_c, stamp_c)
+        W = math.ceil(74 + ww + 2)
+        write(os.path.join(LOGO, f"anicca26-lockup-{v}.svg"), svg(W, 64, mk + wm))
+        # stacked lockup: mark 88, gap 6, name 40
+        wm_probe, ww2 = wordmark(0, 0, 40, name_c, stamp_c)
+        W2 = math.ceil(max(88, ww2) + 8); cx = W2 / 2
+        mk2 = placed_mark(cx - 44, 0, 88, line)
+        wm2, _ = wordmark(cx - ww2 / 2, 88 + 6 + 20, 40, name_c, stamp_c)
+        write(os.path.join(LOGO, f"anicca26-stacked-{v}.svg"), svg(W2, 88 + 6 + 40 + 4, mk2 + wm2))
+    # light-background alternative with a deeper gold, for text-contrast purists
+    wm, ww = wordmark(74, 32, 52, INK, "#8A6D12")
+    write(os.path.join(LOGO, "anicca26-lockup-on-light-deepgold.svg"),
+          svg(math.ceil(74 + ww + 2), 64, placed_mark(0, 0, 64, RACING) + wm))
 
-# App icon: Racing Green square, white mark at 62%
-def app_icon(size, radius=0, small=False):
-    m = size * 0.62; o = (size - m) / 2
-    bg = f'<rect width="{size}" height="{size}" rx="{radius}" fill="{RACING}"/>'
-    return svg(size, size, bg + placed_mark(o, o, m, WHITE, mx=12 if small else 8.6, small=small))
-write(os.path.join(LOGO, "anicca26-app-icon.svg"), app_icon(1024))
-# Small favicon: thicker line, two bold dots
-write(os.path.join(LOGO, "anicca26-favicon.svg"), app_icon(64, radius=14, small=True))
-write(os.path.join(SITE_IMG, "favicon.svg"), app_icon(64, radius=14, small=True))
-for v in VARIANTS:
-    for kind in ("mark", "lockup"):
-        src = os.path.join(LOGO, f"anicca26-{kind}-{v}.svg")
-        write(os.path.join(SITE_IMG, os.path.basename(src)), open(src).read())
-# Inline-ready full-size mark body (white line) for the animated hero
-write(os.path.join(HERE, "hero-mark-body.svgfrag"), mark(WHITE, dots=False))
-write(os.path.join(HERE, "hero-mark-body-light.svgfrag"), mark(RACING, dots=False))
+    # App icon: Racing Green square, white mark at 62%
+    def app_icon(size, radius=0, small=False):
+        m = size * 0.62; o = (size - m) / 2
+        bg = f'<rect width="{size}" height="{size}" rx="{radius}" fill="{RACING}"/>'
+        return svg(size, size, bg + placed_mark(o, o, m, WHITE, mx=12 if small else 8.6, small=small))
+    write(os.path.join(LOGO, "anicca26-app-icon.svg"), app_icon(1024))
+    # Small favicon: thicker line, two bold dots
+    write(os.path.join(LOGO, "anicca26-favicon.svg"), app_icon(64, radius=14, small=True))
+    write(os.path.join(SITE_IMG, "favicon.svg"), app_icon(64, radius=14, small=True))
+    for v in VARIANTS:
+        for kind in ("mark", "lockup"):
+            src = os.path.join(LOGO, f"anicca26-{kind}-{v}.svg")
+            write(os.path.join(SITE_IMG, os.path.basename(src)), open(src).read())
+    # Inline-ready full-size mark body (white line) for the animated hero
+    write(os.path.join(HERE, "hero-mark-body.svgfrag"), mark(WHITE, dots=False))
+    write(os.path.join(HERE, "hero-mark-body-light.svgfrag"), mark(RACING, dots=False))
+
+
+if __name__ == "__main__":
+    main()

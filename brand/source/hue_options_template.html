@@ -1,0 +1,38 @@
+<title>Anicca 26 Logo Colors</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
+<style>
+:root{--racing:#12492f;--ink:#13261f;--muted:#56655f;--line:#dde3de;--bg:#f6f8f6;--tint:#e8f2ec;color-scheme:light}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 "Jost",system-ui,sans-serif;padding-inline:20px;padding-block:40px 80px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+h1{font:300 clamp(32px,5vw,48px)/1.1 "Jost",sans-serif;color:var(--racing);margin:0;text-wrap:balance}
+.lede{color:var(--muted);max-width:64ch;margin:0}
+.eyebrow{font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--racing)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+.opt{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.opt.wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:22px;row-gap:12px;align-items:start;border:2px solid #12492f}
+.opt.wide .stages{grid-row:1/span 5}
+@media (max-width:820px){.opt.wide{display:flex}}
+.stages{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.st{border-radius:12px;display:grid;place-items:center;padding:18px;aspect-ratio:1.15}
+.st svg{width:78%;height:auto}
+.light{background:#fff;border:1px solid var(--line)}
+.green{background:var(--racing)}
+.lk{border-radius:12px;padding:14px 16px;display:flex;align-items:center}
+.lk svg{height:44px;width:auto;max-width:100%}
+h3{margin:4px 0 0;font-weight:500;font-size:20px;color:var(--racing)}
+.opt p{margin:0;color:var(--muted);font-size:16px}
+.bar{display:flex;border-radius:10px;overflow:hidden;height:46px}
+.bar i{flex:1;display:flex;align-items:flex-end;padding:0 0 4px 6px}
+.bar span{font:500 10px/1 ui-monospace,Menlo,monospace;color:rgba(0,0,0,.55);background:rgba(255,255,255,.7);padding:2px 3px;border-radius:3px}
+.bar i:nth-child(2){flex:2.2}
+.sw i{width:18px;height:18px;border-radius:50%;display:block;border:1px solid rgba(0,0,0,.06)}
+</style>
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <span class="eyebrow">Anicca 26 · Logo colors</span>
+    <h1>Marigold and Saffron</h1>
+    <p class="lede">Top row: two ways to combine Marigold and Saffron. Bottom row: each one on its own, for comparison. The color bar under each shows its colors large.</p>
+  </header>
+  <section class="grid">%%CARDS%%</section>
+</div>

@@ -26,7 +26,7 @@
   --sans: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
   --wrap: 1120px;
   --radius: 16px;
-  --rainbow: linear-gradient(90deg, #8b5cf6, #118ab2 30%, #3a9a6a 55%, #7daa55 70%, #afae45 85%, #d4af37);
+  --rainbow: linear-gradient(90deg, #3a9a6a, #9fb13a 30%, #f7a21b 60%, #e8661f 82%, #b8452a);
   color-scheme: light;
 }
 
@@ -56,10 +56,10 @@ p { margin: 0; }
 .eyebrow { font-size: 13px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--racing); display: inline-flex; align-items: center; gap: 10px; }
 .eyebrow::before { content: ""; width: 34px; height: 8px; flex: none;
   background:
-    radial-gradient(circle, #3a9a6a 3.6px, transparent 4px) 0 50% / 8px 8px no-repeat,
-    radial-gradient(circle, #7daa55 3px, transparent 3.4px) 9px 50% / 8px 8px no-repeat,
-    radial-gradient(circle, #afae45 2.5px, transparent 2.9px) 18px 50% / 8px 8px no-repeat,
-    radial-gradient(circle, #d4af37 2px, transparent 2.4px) 26px 50% / 8px 8px no-repeat; }
+    radial-gradient(circle, #9fb13a 3.6px, transparent 4px) 0 50% / 8px 8px no-repeat,
+    radial-gradient(circle, #f7a21b 3px, transparent 3.4px) 9px 50% / 8px 8px no-repeat,
+    radial-gradient(circle, #e8661f 2.5px, transparent 2.9px) 18px 50% / 8px 8px no-repeat,
+    radial-gradient(circle, #b8452a 2px, transparent 2.4px) 26px 50% / 8px 8px no-repeat; }
 .lede { font-size: clamp(19px, 2vw, 22px); line-height: 1.55; max-width: 36ch; }
 
 /* ---------- Header + hero (white, with the logo's color line underneath) ---------- */

@@ -69,10 +69,17 @@ p { margin: 0; }
 .site-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; flex-wrap: wrap; }
 .brand { display: inline-flex; line-height: 0; }
 .brand img { height: 40px; width: auto; }
-.nav { display: flex; gap: clamp(14px, 3vw, 32px); font-size: 17px; }
-.nav a { text-decoration: none; opacity: .85; padding-block: 6px; border-bottom: 2px solid transparent; }
-.nav a:hover { opacity: 1; }
-.nav a[aria-current="page"] { opacity: 1; border-bottom-color: var(--gold); }
+.nav { display: flex; gap: clamp(4px, 1.2vw, 12px); font-size: 17px; }
+/* Each link is a pill: it fills with soft green on hover, and a gold line grows underneath */
+.nav a { position: relative; text-decoration: none; color: var(--racing); padding: 8px 16px; border-radius: 999px;
+  transition: background-color .18s ease, color .18s ease; }
+.nav a::after { content: ""; position: absolute; left: 16px; right: 16px; bottom: 3px; height: 2px; border-radius: 2px;
+  background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .22s ease; }
+.nav a:hover, .nav a:focus-visible { background: #e3efe7; color: var(--racing-deep); }
+.nav a:hover::after, .nav a:focus-visible::after, .nav a[aria-current="page"]::after { transform: scaleX(1); }
+.nav a:active { background: #d3e6da; }
+.nav a[aria-current="page"] { font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { .nav a, .nav a::after { transition: none; } }
 
 .hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: center; padding-block: clamp(40px, 7vw, 96px) clamp(56px, 8vw, 112px); }
 .hero .copy { display: flex; flex-direction: column; gap: 24px; }

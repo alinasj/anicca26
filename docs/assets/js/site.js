@@ -21,7 +21,7 @@
   art.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); play(); } });
 })();
 
-// Support page: small hearts and dots in the logo colors float up out of the
+// Support page: hearts in the logo colors float up out of the
 // coffee cup, sway and fade. Hovering the cup or the button sends up more.
 (function () {
   var layer = document.getElementById("steam");
@@ -33,7 +33,7 @@
   var items = [];
 
   function spawn(age) {
-    var heart = Math.random() < 0.55;
+    var heart = true;                              // hearts only for now
     var el = document.createElementNS(NS, heart ? "path" : "circle");
     if (heart) el.setAttribute("d", HEART); else el.setAttribute("r", "3");
     el.setAttribute("fill", colors[(Math.random() * colors.length) | 0]);
@@ -41,10 +41,10 @@
     items.push({
       el: el, heart: heart, age: age || 0,
       life: 2600 + Math.random() * 1600,
-      x0: 82 + Math.random() * 40, y0: 70,
-      rise: 42 + Math.random() * 20,
+      x0: 78 + Math.random() * 48, y0: 70,
+      rise: 44 + Math.random() * 16,
       sway: 4 + Math.random() * 7, freq: 1 + Math.random() * 1.5, phase: Math.random() * 6.3,
-      s0: 0.35, s1: heart ? 0.8 + Math.random() * 0.5 : 0.7 + Math.random() * 0.6,
+      s0: 0.5, s1: 1.2 + Math.random() * 0.6,
       tilt: (Math.random() - 0.5) * 30
     });
   }
@@ -62,7 +62,7 @@
   }
 
   if (reduce) {                                   // a still handful of hearts above the cup
-    for (var i = 0; i < 7; i++) { spawn(500 + i * 260); }
+    for (var i = 0; i < 10; i++) { spawn(500 + i * 220); }
     items.forEach(draw);
     return;
   }
@@ -75,11 +75,11 @@
     el.addEventListener("touchstart", function () { boost = true; setTimeout(function () { boost = false; }, 1500); }, { passive: true });
   });
 
-  for (var k = 0; k < 6; k++) spawn(k * 450);    // start mid-flow
+  for (var k = 0; k < 10; k++) spawn(k * 280);    // start mid-flow
   var last = performance.now(), since = 0;
   function tick(now) {
     var dt = Math.min(now - last, 60); last = now; since += dt;
-    var every = boost ? 140 : 480;
+    var every = boost ? 90 : 260;
     while (since > every) { since -= every; spawn(0); }
     for (var i = items.length - 1; i >= 0; i--) {
       var p = items[i]; p.age += dt;

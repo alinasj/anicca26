@@ -80,8 +80,14 @@ def mark(line, mx=8.6, dots=True, small=False, fade=None, dot_colors=None):
     for i in range(n):
         s0 = start + i * step; s1 = min(1, s0 + step * 1.6)
         parts.append(f'<path d="{band(s0, s1, wf, 3)}" fill="{color_at(stops, s0 + step / 2)}"/>')
-    ex, ey = pt(A0 + SPAN)
-    parts.append(f'<circle cx="{ex:.2f}" cy="{ey:.2f}" r="{mx / 2}" fill="{fade[2]}"/>')
+    # Rounded end: a half-disc that only extends past the end of the line (a full
+    # circle would sit on top of the still-blending colors and show its outline).
+    # It reaches back 0.6 degrees under the last segment so no seam shows.
+    te = A0 + SPAN; r = wf(1) / 2; cx, cy = pt(te)
+    back = [pt(te - 0.6, R - r), pt(te - 0.6, R + r)]
+    half = [(cx + r * math.cos(math.radians(te + k)), cy + r * math.sin(math.radians(te + k))) for k in range(0, 181, 6)]
+    cap = back + half
+    parts.append('<path d="M' + " L".join(f"{x:.2f} {y:.2f}" for x, y in cap) + f'Z" fill="{fade[2]}"/>')
     if dots:
         end = A0 + SPAN
         if small:   # two bold dots stay visible at 16-32px

@@ -1,25 +1,5 @@
-// Home page logo: draw on load, replay the drawing when hovered or tapped.
-(function () {
-  var art = document.querySelector(".logo-art");
-  var logo = art && art.querySelector(".logo-anim");
-  if (!logo) return;
-  var replaying = false;
-  function play() {
-    if (replaying) return;
-    replaying = true;
-    logo.classList.remove("play");
-    void logo.getBoundingClientRect(); // restart the CSS animations
-    logo.classList.add("play");
-    setTimeout(function () { replaying = false; }, 3000);
-  }
-  logo.classList.add("play");
-  art.addEventListener("mouseenter", play);
-  art.addEventListener("click", play);
-  art.setAttribute("role", "button");
-  art.setAttribute("tabindex", "0");
-  art.setAttribute("aria-label", "Replay the logo animation");
-  art.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); play(); } });
-})();
+// Home page logo: the drawing plays once per visit via CSS (.logo-anim.play);
+// after that only the dots keep pulsing. No replay on hover or scroll.
 
 // Support page: hearts in the logo colors float up out of the
 // coffee cup, sway and fade. Hovering the cup or the button sends up more.

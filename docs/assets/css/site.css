@@ -108,11 +108,9 @@ p { margin: 0; }
 .btn small { font-size: 12px; opacity: .8; display: block; margin-bottom: 3px; font-weight: 400; }
 .btn .two { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1; }
 
-/* Animated logo: the line draws itself, the dots pop in, then keep a gentle
-   "..." wave going. Hovering or tapping the logo replays the drawing (site.js). */
-.logo-art { cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 50%; }
-.logo-anim { overflow: visible; transition: transform .4s ease; }
-.logo-art:hover .logo-anim { transform: rotate(-4deg) scale(1.02); }
+/* Animated logo: the line draws itself once when the page opens, the dots pop in,
+   then keep a gentle "..." wave going. */
+.logo-anim { overflow: visible; }
 .logo-anim .draw { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
 .logo-anim .d { opacity: 0; transform-box: fill-box; transform-origin: center; }
 .logo-anim.play .draw { animation: draw 1.8s .25s cubic-bezier(.45, 0, .2, 1) forwards; }
@@ -139,7 +137,6 @@ p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   .logo-anim .draw, .logo-anim.play .draw { animation: none; stroke-dashoffset: 0; }
   .logo-anim .d, .logo-anim.play .d1, .logo-anim.play .d2, .logo-anim.play .d3, .logo-anim.play .d4 { animation: none; opacity: 1; }
-  .logo-art:hover .logo-anim { transform: none; }
   .band::after, .product.featured::before { animation: none; }
   .btn { transition: none; }
 }

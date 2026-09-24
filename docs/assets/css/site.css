@@ -130,19 +130,21 @@ p { margin: 0; }
 
 .products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 760px) { .products { grid-template-columns: 1fr; } }
-.product { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; display: flex; flex-direction: column; gap: 12px; }
-.product p { color: var(--muted); }
+.product { background: #e8f2ec; border: 1px solid #cfe3d6; transition: transform .18s ease, box-shadow .18s ease; border-radius: var(--radius); padding: 26px; display: flex; flex-direction: column; gap: 12px; }
+.product p { color: #3f524a; }
+.product h3 { color: var(--racing); }
+.product.featured { background: #dcebe2; border-color: #c3dccc; }
 .product .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .product.featured { position: relative; overflow: hidden; padding-top: 30px;
   grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; }
 .product.featured::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--rainbow); }
 .product.featured .text { display: flex; flex-direction: column; gap: 12px; }
-.product.featured .terra-anim { width: 210px; }
+.product.featured .terra-anim { width: 210px; background: #fff; border-radius: 20px; padding: 8px; box-shadow: 0 10px 24px -14px rgba(18, 73, 47, .35); }
 @media (max-width: 560px) { .product.featured { grid-template-columns: 1fr; } .product.featured .terra-anim { width: 180px; } }
 .product.wide { grid-column: 1 / -1; }
 .chip { font-size: 13px; font-weight: 500; padding: 4px 11px; border-radius: 999px; white-space: nowrap; }
-.chip-now { background: var(--chip-now-bg); color: var(--chip-now-ink); }
-.chip-later { background: var(--chip-later-bg); color: var(--chip-later-ink); }
+.chip-now { background: var(--racing); color: #fff; }
+.chip-later { background: #fff; color: #6b5712; border: 1px solid #e7dcb0; }
 .works { font-size: 15px; color: var(--muted); }
 .product .more { font-weight: 500; }
 
